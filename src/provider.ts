@@ -61,15 +61,15 @@ export class LLMProvider {
       max_tokens: 4096,
       messages: messages.map(m => ({
         role: m.role === 'system' ? 'user' : m.role,
-        content: m.content,
-      })),
+        content: m.content as any,
+      })) as any,
     });
 
-    const content = response.content[0].type === 'text' 
-      ? response.content[0].text 
+    const content = response.content[0].type === 'text'
+      ? response.content[0].text
       : '';
 
-    const cost = 
+    const cost =
       (response.usage.input_tokens / 1_000_000) * model.inputCostPerMillion +
       (response.usage.output_tokens / 1_000_000) * model.outputCostPerMillion;
 
@@ -94,10 +94,10 @@ export class LLMProvider {
     }
 
     const genModel = this.google.getGenerativeModel({ model: model.id });
-    
+
     // Convert messages to Google format
     const prompt = messages.map(m => `${m.role}: ${m.content}`).join('\n\n');
-    
+
     const result = await genModel.generateContent(prompt);
     const response = result.response;
     const content = response.text();
@@ -105,8 +105,8 @@ export class LLMProvider {
     // Google doesn't provide token counts easily, estimate
     const inputTokens = Math.ceil(prompt.length / 4);
     const outputTokens = Math.ceil(content.length / 4);
-    
-    const cost = 
+
+    const cost =
       (inputTokens / 1_000_000) * model.inputCostPerMillion +
       (outputTokens / 1_000_000) * model.outputCostPerMillion;
 
@@ -134,8 +134,8 @@ export class LLMProvider {
       model: model.id,
       messages: messages.map(m => ({
         role: m.role,
-        content: m.content,
-      })),
+        content: m.content as any,
+      })) as any,
       max_tokens: 4096,
     });
 
@@ -143,7 +143,7 @@ export class LLMProvider {
     const inputTokens = response.usage?.prompt_tokens || 0;
     const outputTokens = response.usage?.completion_tokens || 0;
 
-    const cost = 
+    const cost =
       (inputTokens / 1_000_000) * model.inputCostPerMillion +
       (outputTokens / 1_000_000) * model.outputCostPerMillion;
 
@@ -171,8 +171,8 @@ export class LLMProvider {
       model: model.id,
       messages: messages.map(m => ({
         role: m.role === 'system' ? 'system' : m.role,
-        content: m.content,
-      })),
+        content: m.content as any,
+      })) as any,
       max_tokens: 4096,
     });
 
@@ -180,7 +180,7 @@ export class LLMProvider {
     const inputTokens = response.usage?.prompt_tokens || 0;
     const outputTokens = response.usage?.completion_tokens || 0;
 
-    const cost = 
+    const cost =
       (inputTokens / 1_000_000) * model.inputCostPerMillion +
       (outputTokens / 1_000_000) * model.outputCostPerMillion;
 

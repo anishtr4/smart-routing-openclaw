@@ -6,7 +6,7 @@ const provider_1 = require("./provider");
 const router_1 = require("./router");
 const cost_tracker_1 = require("./cost-tracker");
 const models_1 = require("./models");
-async function activate(openclaw, config) {
+async function activate(openclaw, config = {}) {
     console.log('🚀 Smart LLM Router initializing...');
     // Get API keys from config or environment
     const anthropicKey = config.anthropicApiKey || process.env.ANTHROPIC_API_KEY;

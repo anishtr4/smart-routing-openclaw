@@ -4,7 +4,7 @@ import { CostTracker } from './cost-tracker';
 import { PluginConfig, Message, Tier } from './types';
 import { MODELS, getCheapestModelForTier } from './models';
 
-export async function activate(openclaw: any, config: PluginConfig) {
+export async function activate(openclaw: any, config: PluginConfig = {}) {
   console.log('🚀 Smart LLM Router initializing...');
 
   // Get API keys from config or environment
@@ -34,8 +34,8 @@ export async function activate(openclaw: any, config: PluginConfig) {
   });
 
   // Initialize cost tracker
-  const costTracker = config.costTracking !== false 
-    ? new CostTracker() 
+  const costTracker = config.costTracking !== false
+    ? new CostTracker()
     : null;
 
   // Log configured providers
@@ -45,9 +45,9 @@ export async function activate(openclaw: any, config: PluginConfig) {
     groqKey && 'Groq',
     openaiKey && 'OpenAI',
   ].filter(Boolean);
-  
+
   console.log(`✅ Configured providers: ${configuredProviders.join(', ')}`);
-  
+
   if (costTracker) {
     console.log('📊 Cost tracking enabled');
   }
@@ -69,7 +69,7 @@ export async function activate(openclaw: any, config: PluginConfig) {
   const complete = async (messages: Message[]) => {
     let selectedModel;
     let decision;
-    
+
     const modelId = messages[0]?.role === 'system' && messages[0]?.content.startsWith('model:')
       ? messages[0].content.replace('model:', '').trim()
       : 'auto';
@@ -78,14 +78,14 @@ export async function activate(openclaw: any, config: PluginConfig) {
     if (modelId === 'auto') {
       decision = routeRequest(messages, (config.defaultTier as Tier) || 'MEDIUM');
       selectedModel = decision.model;
-      
+
       if (config.enableLogging !== false) {
         console.log('\n' + explainRouting(decision));
       }
     } else if (['simple', 'medium', 'complex', 'reasoning'].includes(modelId)) {
       const tier = modelId.toUpperCase() as Tier;
       selectedModel = getCheapestModelForTier(tier);
-      
+
       if (config.enableLogging !== false) {
         console.log(`\n🎯 Using ${tier} tier: ${selectedModel.name}`);
       }
@@ -95,7 +95,7 @@ export async function activate(openclaw: any, config: PluginConfig) {
       if (!selectedModel) {
         throw new Error(`Unknown model: ${modelId}`);
       }
-      
+
       if (config.enableLogging !== false) {
         console.log(`\n🎯 Using specific model: ${selectedModel.name}`);
       }
@@ -177,16 +177,16 @@ export async function activate(openclaw: any, config: PluginConfig) {
     description: 'List all available models with pricing',
     handler: () => {
       console.log('\n📋 Available Models:\n');
-      
+
       const byTier: Record<Tier, typeof MODELS> = {
         SIMPLE: [],
         MEDIUM: [],
         COMPLEX: [],
         REASONING: [],
       };
-      
+
       MODELS.forEach(m => byTier[m.tier].push(m));
-      
+
       Object.entries(byTier).forEach(([tier, models]) => {
         console.log(`\n${tier}:`);
         models.forEach(m => {

@@ -52,7 +52,7 @@ export function activate(openclaw: any, config: PluginConfig = {}) {
   // Register models with OpenClaw
   const availableModels = [
     { id: 'auto', name: '🎯 Auto (Smart Routing)' },
-    { id: 'smart-llm-router/auto', name: '🎯 Auto (Smart Routing) - Full ID' }, // Explicit alias
+    { id: 'smart-router/auto', name: '🎯 Auto (Smart Routing) - Full ID (Explicit)' },
     { id: 'simple', name: '💰 Simple Tier (Cheapest)' },
     { id: 'medium', name: '⚖️ Medium Tier (Balanced)' },
     { id: 'complex', name: '🎓 Complex Tier (High Quality)' },

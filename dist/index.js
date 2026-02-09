@@ -16,12 +16,8 @@ async function activate(openclaw, config = {}) {
     const openaiKey = config.openaiApiKey || process.env.OPENAI_API_KEY;
     // Validate at least one provider is configured
     if (!anthropicKey && !googleKey && !groqKey && !openaiKey) {
-        throw new Error('No API keys configured! Please set at least one of:\n' +
-            '  - ANTHROPIC_API_KEY\n' +
-            '  - GOOGLE_API_KEY\n' +
-            '  - GROQ_API_KEY\n' +
-            '  - OPENAI_API_KEY\n' +
-            'Or configure them in plugin settings.');
+        console.warn('⚠️ Smart Router: No API keys configured! functionality will be limited.\n' +
+            '  Please set GOOGLE_API_KEY, OPENAI_API_KEY, etc.');
     }
     // Initialize provider
     const provider = new provider_1.LLMProvider({

@@ -1,0 +1,36 @@
+{
+  "name": "@local/smart-llm-router",
+  "version": "1.0.0",
+  "description": "Smart LLM router for OpenClaw - automatically routes to the most cost-effective model",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist",
+    "test-router": "npm run build && npx tsx test-router.ts",
+    "install-plugin": "npm run build && npm link && echo '\n✅ Plugin built and linked! Now run:\n   openclaw plugin install $(pwd)\n'",
+    "uninstall-plugin": "openclaw plugin uninstall @local/smart-llm-router && npm unlink",
+    "reinstall": "npm run uninstall-plugin ; npm run install-plugin"
+  },
+  "keywords": [
+    "openclaw",
+    "llm",
+    "router",
+    "ai",
+    "cost-optimization"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.27.0",
+    "@google/generative-ai": "^0.21.0",
+    "groq-sdk": "^0.7.0",
+    "openai": "^4.67.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.0"
+  }
+}

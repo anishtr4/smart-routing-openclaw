@@ -1,0 +1,55 @@
+{
+  "id": "@local/smart-llm-router",
+  "name": "Smart LLM Router",
+  "version": "1.0.0",
+  "description": "Intelligent cost-optimized routing across Claude, Gemini, Groq, and OpenAI",
+  "main": "dist/index.js",
+  "author": "Your Name",
+  "license": "MIT",
+  "openclaw": {
+    "minVersion": "0.1.0"
+  },
+  "config": {
+    "schema": {
+      "type": "object",
+      "properties": {
+        "anthropicApiKey": {
+          "type": "string",
+          "description": "Anthropic API key (or set ANTHROPIC_API_KEY env var)",
+          "default": ""
+        },
+        "googleApiKey": {
+          "type": "string",
+          "description": "Google AI API key (or set GOOGLE_API_KEY env var)",
+          "default": ""
+        },
+        "groqApiKey": {
+          "type": "string",
+          "description": "Groq API key (or set GROQ_API_KEY env var)",
+          "default": ""
+        },
+        "openaiApiKey": {
+          "type": "string",
+          "description": "OpenAI API key (or set OPENAI_API_KEY env var)",
+          "default": ""
+        },
+        "defaultTier": {
+          "type": "string",
+          "enum": ["simple", "medium", "complex", "reasoning"],
+          "description": "Fallback tier when routing confidence is low",
+          "default": "medium"
+        },
+        "enableLogging": {
+          "type": "boolean",
+          "description": "Log routing decisions and costs",
+          "default": true
+        },
+        "costTracking": {
+          "type": "boolean",
+          "description": "Track and display cumulative costs",
+          "default": true
+        }
+      }
+    }
+  }
+}

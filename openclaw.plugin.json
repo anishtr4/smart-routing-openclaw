@@ -8,7 +8,7 @@
         "dark": "assets/icon-dark.png"
     },
     "entry": "dist/index.js",
-    "config": {
+    "configSchema": {
         "anthropicApiKey": {
             "type": "string",
             "description": "Anthropic API key (optional)"

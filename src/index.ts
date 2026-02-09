@@ -224,6 +224,15 @@ export function register(api: any) {
     }
   });
 
+  // Handle "Port In Use" smoothly to prevent crashes on reload
+  server.on('error', (e: any) => {
+    if (e.code === 'EADDRINUSE') {
+      console.log('⚠️  Internal HTTP Bridge already running on port 8511 (skipping startup)');
+    } else {
+      console.error('❌ Bridge Error:', e);
+    }
+  });
+
   // Listen on a local-only port
   server.listen(8511, '127.0.0.1', () => {
     console.log('🚀 Internal HTTP Bridge listening on 127.0.0.1:8511');

@@ -54,6 +54,7 @@ export function activate(openclaw: any, config: PluginConfig = {}) {
     {
       id: 'auto',
       name: '🎯 Auto (Smart Routing)',
+      provider: 'smart-router', // MANDATORY for Registry lookup
       api: 'smart-router',
       reasoning: true,
       input: ["text", "image"] as ("text" | "image")[],
@@ -68,6 +69,7 @@ export function activate(openclaw: any, config: PluginConfig = {}) {
     ...MODELS.map(m => ({
       id: m.id,
       name: `${m.name} [${m.tier}]`,
+      provider: 'smart-router', // MANDATORY for Registry lookup
       api: 'smart-router',
       reasoning: m.reasoning || false,
       input: (m.input || ["text"]) as ("text" | "image")[],

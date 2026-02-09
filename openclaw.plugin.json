@@ -1,7 +1,7 @@
 {
-    "id": "smart-llm-router",
+    "id": "smart-router",
     "name": "Smart Router",
-    "version": "1.0.0",
+    "version": "1.3.2",
     "description": "Intelligent cost-optimized routing across multiple LLM providers (Claude, Gemini, Groq, OpenAI)",
     "icons": {
         "light": "assets/icon-light.png",

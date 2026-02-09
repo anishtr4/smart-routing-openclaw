@@ -4,7 +4,9 @@ import { CostTracker } from './cost-tracker';
 import { PluginConfig, Message, Tier } from './types';
 import { MODELS, getCheapestModelForTier } from './models';
 
-export function activate(openclaw: any, config: PluginConfig = {}) {
+export function register(api: any) {
+  const openclaw = api;
+  const config = api.pluginConfig || {};
   console.log('🚀 Smart LLM Router initializing...');
   console.log('📥 Received Config:', JSON.stringify(config, null, 2));
 
@@ -278,4 +280,4 @@ export function activate(openclaw: any, config: PluginConfig = {}) {
 }
 
 // Alias for backward compatibility or alternate naming convention
-export const register = activate;
+export { register as activate };

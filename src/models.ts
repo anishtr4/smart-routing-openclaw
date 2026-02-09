@@ -15,7 +15,7 @@ export const MODELS: ModelConfig[] = [
     maxTokens: 4096
   },
   {
-    id: 'gemini-1.5-flash',
+    id: 'gemini-1.5-flash-latest',
     name: 'Gemini 1.5 Flash',
     provider: 'google',
     inputCostPerMillion: 0.075,
@@ -53,11 +53,11 @@ export const MODELS: ModelConfig[] = [
     maxTokens: 4096
   },
   {
-    id: 'gemini-2.0-flash',
-    name: 'Gemini 2.0 Flash',
+    id: 'gemini-1.5-pro-latest',
+    name: 'Gemini 1.5 Pro',
     provider: 'google',
-    inputCostPerMillion: 0.10,
-    outputCostPerMillion: 0.40,
+    inputCostPerMillion: 3.50,
+    outputCostPerMillion: 10.50,
     contextWindow: 1000000,
     tier: 'MEDIUM',
     reasoning: false,
@@ -91,11 +91,11 @@ export const MODELS: ModelConfig[] = [
     maxTokens: 16384
   },
   {
-    id: 'gemini-2.5-pro',
-    name: 'Gemini 2.5 Pro',
+    id: 'gemini-1.5-pro-latest',
+    name: 'Gemini 1.5 Pro',
     provider: 'google',
-    inputCostPerMillion: 1.25,
-    outputCostPerMillion: 10.00,
+    inputCostPerMillion: 3.50,
+    outputCostPerMillion: 10.50,
     contextWindow: 2000000,
     tier: 'COMPLEX',
     reasoning: false,
@@ -145,13 +145,13 @@ export const MODELS: ModelConfig[] = [
 // Quick lookup by provider and tier
 export const PRIMARY_MODELS: Record<string, ModelConfig> = {
   'simple-groq': MODELS.find(m => m.id === 'llama-3.1-70b-versatile')!,
-  'simple-google': MODELS.find(m => m.id === 'gemini-1.5-flash')!,
-  'medium-google': MODELS.find(m => m.id === 'gemini-2.0-flash')!,
+  'simple-google': MODELS.find(m => m.id === 'gemini-1.5-flash-latest')!,
+  'medium-google': MODELS.find(m => m.id === 'gemini-1.5-pro-latest')!,
   'medium-openai': MODELS.find(m => m.id === 'gpt-4o-mini')!,
   'medium-anthropic': MODELS.find(m => m.id === 'claude-haiku-4.5')!,
   'complex-anthropic': MODELS.find(m => m.id === 'claude-sonnet-4.5')!,
   'complex-openai': MODELS.find(m => m.id === 'gpt-4o')!,
-  'complex-google': MODELS.find(m => m.id === 'gemini-2.5-pro')!,
+  'complex-google': MODELS.find(m => m.id === 'gemini-1.5-pro-latest')!,
   'reasoning-anthropic': MODELS.find(m => m.id === 'claude-opus-4.5')!,
   'reasoning-openai': MODELS.find(m => m.id === 'o3-mini')!,
   'reasoning-groq': MODELS.find(m => m.id === 'deepseek-reasoner')!,

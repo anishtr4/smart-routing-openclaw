@@ -1,0 +1,54 @@
+{
+    "$schema": "https://openclaw.ai/schemas/plugin.json",
+    "id": "smart-router",
+    "name": "Smart Router",
+    "version": "1.0.0",
+    "description": "Intelligent cost-optimized routing across multiple LLM providers (Claude, Gemini, Groq, OpenAI)",
+    "icons": {
+        "light": "assets/icon-light.png",
+        "dark": "assets/icon-dark.png"
+    },
+    "entry": "dist/index.js",
+    "config": {
+        "anthropicApiKey": {
+            "type": "string",
+            "description": "Anthropic API key (optional)"
+        },
+        "googleApiKey": {
+            "type": "string",
+            "description": "Google AI API key (optional)"
+        },
+        "groqApiKey": {
+            "type": "string",
+            "description": "Groq API key (optional)"
+        },
+        "openaiApiKey": {
+            "type": "string",
+            "description": "OpenAI API key (optional)"
+        },
+        "defaultTier": {
+            "type": "string",
+            "enum": [
+                "simple",
+                "medium",
+                "complex",
+                "reasoning"
+            ],
+            "default": "medium",
+            "description": "Fallback complexity tier"
+        },
+        "enableLogging": {
+            "type": "boolean",
+            "default": true,
+            "description": "Log routing decisions"
+        },
+        "costTracking": {
+            "type": "boolean",
+            "default": true,
+            "description": "Track estimated costs"
+        }
+    },
+    "capabilities": [
+        "llm-provider"
+    ]
+}

@@ -36,7 +36,7 @@
   "openclaw": {
     "extensions": [
       {
-        "type": "plugin",
+        "type": "skill",
         "id": "smart-router",
         "name": "Smart Router",
         "description": "Intelligent cost-optimized routing across multiple LLM providers",

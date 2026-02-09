@@ -59,7 +59,9 @@ export function activate(openclaw: any, config: PluginConfig = {}) {
       input: ["text", "image"] as ("text" | "image")[],
       cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
       contextWindow: 128000,
+      context_window: 128000, // snake_case fallback
       maxTokens: 4096,
+      max_tokens: 4096, // snake_case fallback
       local: true
     },
     ...MODELS.map(m => ({
@@ -75,7 +77,9 @@ export function activate(openclaw: any, config: PluginConfig = {}) {
         cacheWrite: 0
       },
       contextWindow: m.contextWindow,
+      context_window: m.contextWindow, // snake_case fallback
       maxTokens: m.maxTokens || 4096,
+      max_tokens: m.maxTokens || 4096, // snake_case fallback
       local: true
     })),
   ];

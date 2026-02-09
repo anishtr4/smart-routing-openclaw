@@ -69,6 +69,16 @@ const IMPERATIVE_VERBS = [
   'refactor', 'optimize', 'debug', 'fix', 'improve',
 ];
 
+function getTextContent(content: string | any[]): string {
+  if (typeof content === 'string') return content;
+  if (Array.isArray(content)) {
+    return content
+      .map(part => (typeof part === 'string' ? part : part.text || ''))
+      .join(' ');
+  }
+  return '';
+}
+
 function countMatches(text: string, keywords: string[]): number {
   const lowerText = text.toLowerCase();
   return keywords.filter(kw => lowerText.includes(kw)).length;
@@ -88,8 +98,8 @@ export function routeRequest(
   defaultTier: Tier = 'MEDIUM'
 ): RoutingDecision {
   const lastMessage = messages[messages.length - 1];
-  const prompt = lastMessage.content;
-  
+  const prompt = getTextContent(lastMessage.content);
+
   // Quick rule-based routing for high-confidence cases
   const reasoningCount = countMatches(prompt, REASONING_KEYWORDS);
   if (reasoningCount >= 2) {
@@ -102,7 +112,7 @@ export function routeRequest(
       reasoning: `Detected ${reasoningCount} reasoning markers - requires deep logical thinking`,
     };
   }
-  
+
   // Calculate weighted scores
   const scores = {
     reasoning: countMatches(prompt, REASONING_KEYWORDS) * DEFAULT_WEIGHTS.reasoningMarkers,
@@ -113,31 +123,31 @@ export function routeRequest(
     creative: countMatches(prompt, CREATIVE_MARKERS) * DEFAULT_WEIGHTS.creativeMarkers,
     imperative: countMatches(prompt, IMPERATIVE_VERBS) * DEFAULT_WEIGHTS.imperativeVerbs,
   };
-  
+
   // Token-based scoring
   const tokens = estimateTokens(prompt);
   let tokenScore = 0;
   if (tokens < 50) tokenScore = -DEFAULT_WEIGHTS.tokenCount; // Very short = likely simple
   else if (tokens > 500) tokenScore = DEFAULT_WEIGHTS.tokenCount; // Very long = likely complex
-  
+
   // Question complexity
   const questionMarks = (prompt.match(/\?/g) || []).length;
   const questionScore = questionMarks > 1 ? DEFAULT_WEIGHTS.questionComplexity : 0;
-  
+
   // Constraint detection
   const constraints = countMatches(prompt, ['at most', 'at least', 'maximum', 'minimum', 'O(n)', 'Big O']);
   const constraintScore = constraints * DEFAULT_WEIGHTS.constraintCount;
-  
+
   // Output format detection
   const formatKeywords = ['json', 'yaml', 'xml', 'csv', 'schema', 'format'];
   const formatScore = countMatches(prompt, formatKeywords) * DEFAULT_WEIGHTS.outputFormat;
-  
+
   // Calculate total weighted score
-  const totalScore = 
-    scores.reasoning + 
-    scores.code + 
-    scores.multiStep + 
-    scores.technical + 
+  const totalScore =
+    scores.reasoning +
+    scores.code +
+    scores.multiStep +
+    scores.technical +
     scores.creative +
     scores.imperative +
     tokenScore +
@@ -145,14 +155,14 @@ export function routeRequest(
     constraintScore +
     formatScore -
     scores.simple; // Subtract simple indicators
-  
+
   // Apply sigmoid for calibration
   const confidence = sigmoid(totalScore * 2);
-  
+
   // Determine tier based on score
   let tier: Tier;
   let reasoning: string;
-  
+
   if (totalScore > 0.3) {
     tier = 'COMPLEX';
     reasoning = 'High complexity detected: technical terms, multi-step reasoning, or code';
@@ -166,10 +176,10 @@ export function routeRequest(
     tier = defaultTier;
     reasoning = `Ambiguous complexity - defaulting to ${defaultTier} tier`;
   }
-  
+
   // Get the cheapest model for the selected tier
   const model = getCheapestModelForTier(tier);
-  
+
   return {
     model,
     tier,
@@ -181,7 +191,7 @@ export function routeRequest(
 
 export function explainRouting(decision: RoutingDecision): string {
   const savingsVsOpus = ((1 - (decision.model.inputCostPerMillion + decision.model.outputCostPerMillion) / 180) * 100).toFixed(0);
-  
+
   return [
     `🎯 Routing Decision:`,
     `   Model: ${decision.model.name}`,

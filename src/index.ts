@@ -54,15 +54,18 @@ export function activate(openclaw: any, config: PluginConfig = {}) {
     {
       id: 'auto',
       name: '🎯 Auto (Smart Routing)',
+      api: 'smart-router',
       reasoning: true,
       input: ["text", "image"] as ("text" | "image")[],
       cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
       contextWindow: 128000,
-      maxTokens: 4096
+      maxTokens: 4096,
+      local: true
     },
     ...MODELS.map(m => ({
       id: m.id,
       name: `${m.name} [${m.tier}]`,
+      api: 'smart-router',
       reasoning: m.reasoning || false,
       input: (m.input || ["text"]) as ("text" | "image")[],
       cost: {
@@ -72,7 +75,8 @@ export function activate(openclaw: any, config: PluginConfig = {}) {
         cacheWrite: 0
       },
       contextWindow: m.contextWindow,
-      maxTokens: m.maxTokens || 4096
+      maxTokens: m.maxTokens || 4096,
+      local: true
     })),
   ];
 
@@ -163,8 +167,20 @@ export function activate(openclaw: any, config: PluginConfig = {}) {
   // Register provider with OpenClaw using the two-argument signature
   openclaw.registerProvider('smart-llm-router', {
     name: 'Smart Router',
+    api: 'smart-router',
+    baseUrl: 'http://localhost/smart-router',
+    apiKey: 'local', // Satisfies registry auth check
     models: availableModels,
     complete,
+    // Provide streamSimple for newer pi-ai compatibility
+    streamSimple: async function* (model: any, context: any) {
+      const response = await complete(context.messages, model.id);
+      yield {
+        text: response.content,
+        usage: response.usage,
+        finishReason: 'stop'
+      };
+    }
   });
   console.log('✅ Provider registered!');
 

@@ -137,7 +137,7 @@ export async function activate(openclaw: any, config: PluginConfig = {}) {
 
   // Register provider with OpenClaw
   openclaw.registerProvider({
-    id: 'smart-router',
+    id: 'smart-llm-router',
     name: 'Smart Router',
     models: availableModels,
     complete,

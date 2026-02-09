@@ -57,7 +57,7 @@ export function register(api: any) {
       id: 'auto',
       name: '🎯 Auto (Smart Routing)',
       provider: 'smart-router', // MANDATORY for Registry lookup
-      api: 'smart-router',
+      api: 'openai-completions',
       reasoning: true,
       input: ["text", "image"] as ("text" | "image")[],
       cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
@@ -205,7 +205,7 @@ export function register(api: any) {
     console.log('🏗️  Targeting OpenClaw Model Registry...');
     api.config.models.providers['smart-router'] = {
       baseUrl: 'http://localhost/smart-router',
-      api: 'smart-router',
+      api: 'openai-completions',
       apiKey: 'local',
       models: availableModels
     };

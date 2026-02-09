@@ -1,5 +1,5 @@
 {
-    "id": "smart-router",
+    "id": "smart-llm-router",
     "name": "Smart Router",
     "version": "1.0.0",
     "description": "Intelligent cost-optimized routing across multiple LLM providers (Claude, Gemini, Groq, OpenAI)",

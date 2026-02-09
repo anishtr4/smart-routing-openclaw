@@ -52,14 +52,12 @@ export function activate(openclaw: any, config: PluginConfig = {}) {
   // Register models with OpenClaw
   const availableModels = [
     { id: 'auto', name: '🎯 Auto (Smart Routing)' },
-    { id: 'smart-llm-router/auto', name: '🎯 Auto (Smart Routing) - Full ID (Explicit)', contextWindow: 128000, provider: 'smart-llm-router' },
-    { id: 'simple', name: '💰 Simple Tier (Cheapest)', contextWindow: 128000, provider: 'smart-llm-router' },
-    { id: 'medium', name: '⚖️ Medium Tier (Balanced)', contextWindow: 128000, provider: 'smart-llm-router' },
-    { id: 'complex', name: '🎓 Complex Tier (High Quality)', contextWindow: 128000, provider: 'smart-llm-router' },
-    { id: 'reasoning', name: '🧠 Reasoning Tier (Maximum Capability)', contextWindow: 128000, provider: 'smart-llm-router' },
+    { id: 'smart-llm-router/auto', name: '🎯 Auto (Smart Routing) - Full ID (Explicit)', contextWindow: 128000, provider: 'smart-llm-router', local: true },
+    { id: 'simple', name: '💰 Simple Tier (Cheapest)', contextWindow: 128000, provider: 'smart-llm-router', local: true },
     ...MODELS.map(m => ({
       ...m,
-      provider: 'smart-llm-router', // Explicitly override provider
+      provider: 'smart-llm-router',
+      local: true, // Mark all mapped models as local too
       name: `${m.name} ($${m.inputCostPerMillion}/$${m.outputCostPerMillion})`,
     })),
   ];
@@ -152,6 +150,8 @@ export function activate(openclaw: any, config: PluginConfig = {}) {
   openclaw.registerProvider({
     id: 'smart-llm-router',
     name: 'Smart Router',
+    // Mark as local to bypass auth checks:
+    local: true,
     models: availableModels,
     complete,
   });

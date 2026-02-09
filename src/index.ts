@@ -52,6 +52,7 @@ export function activate(openclaw: any, config: PluginConfig = {}) {
   // Register models with OpenClaw
   const availableModels = [
     { id: 'auto', name: '🎯 Auto (Smart Routing)' },
+    { id: 'smart-llm-router/auto', name: '🎯 Auto (Smart Routing) - Full ID' }, // Explicit alias
     { id: 'simple', name: '💰 Simple Tier (Cheapest)' },
     { id: 'medium', name: '⚖️ Medium Tier (Balanced)' },
     { id: 'complex', name: '🎓 Complex Tier (High Quality)' },
@@ -63,13 +64,22 @@ export function activate(openclaw: any, config: PluginConfig = {}) {
   ];
 
   // Main completion function
-  const complete = async (messages: Message[]) => {
+  const complete = async (messages: Message[], requestModelId?: string) => {
     let selectedModel;
     let decision;
 
-    const modelId = messages[0]?.role === 'system' && messages[0]?.content.startsWith('model:')
-      ? messages[0].content.replace('model:', '').trim()
-      : 'auto';
+    // Determine model ID from request or default
+    let modelId = requestModelId || 'auto';
+
+    // Strip provider prefix if present
+    if (modelId.includes('/')) {
+      modelId = modelId.split('/').pop() || 'auto';
+    }
+
+    // Fallback: Check system message for model override (CLI/Testing)
+    if (modelId === 'auto' && messages[0]?.role === 'system' && messages[0]?.content.startsWith('model:')) {
+      modelId = messages[0].content.replace('model:', '').trim();
+    }
 
     // Handle tier selection
     if (modelId === 'auto') {

@@ -176,7 +176,8 @@ export function activate(openclaw: any, config: PluginConfig = {}) {
   // Register provider with OpenClaw
   console.log(`🔌 Registering provider 'smart-router' with ${availableModels.length} models...`);
 
-  openclaw.registerProvider('smart-router', {
+  openclaw.registerProvider({
+    id: 'smart-router',
     name: 'Smart Router',
     api: 'smart-router',
     baseUrl: 'http://localhost/smart-router',

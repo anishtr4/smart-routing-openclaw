@@ -149,7 +149,7 @@ export function activate(openclaw: any, config: PluginConfig = {}) {
   console.log('🔌 Registering provider with models:', JSON.stringify(availableModels, null, 2));
 
   openclaw.registerProvider({
-    id: 'smart-llm-router',
+    id: 'smart-router',
     name: 'Smart Router',
     models: availableModels,
     complete,

@@ -109,12 +109,14 @@ function activate(openclaw, config = {}) {
         return response;
     };
     // Register provider with OpenClaw
+    console.log('🔌 Registering provider with models:', JSON.stringify(availableModels, null, 2));
     openclaw.registerProvider({
         id: 'smart-llm-router',
         name: 'Smart Router',
         models: availableModels,
         complete,
     });
+    console.log('✅ Provider registered!');
     // Register CLI commands
     openclaw.registerCommand({
         name: 'router-stats',

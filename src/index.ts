@@ -194,15 +194,20 @@ export function activate(openclaw: any, config: PluginConfig = {}) {
   });
 
   // 2. Direct Registry Injection (The "Magic Bridge" for the CLI)
-  // This ensures 'openclaw models list' sees your models immediately
-  if (openclaw.config?.models?.providers) {
-    console.log('🏗️ Injecting models into OpenClaw registry...');
-    openclaw.config.models.providers['smart-router'] = {
+  // Ensures 'openclaw models list' sees your models immediately
+  // We use safe recursive initialization to guarantee the object exists
+  if (api.config) {
+    if (!api.config.models) api.config.models = {};
+    if (!api.config.models.providers) api.config.models.providers = {};
+
+    console.log('🏗️  Targeting OpenClaw Model Registry...');
+    api.config.models.providers['smart-router'] = {
       baseUrl: 'http://localhost/smart-router',
       api: 'smart-router',
       apiKey: 'local',
       models: availableModels
     };
+    console.log('✅ Registry Injection successful!');
   }
   console.log('✅ Provider registered!');
 

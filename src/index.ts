@@ -173,9 +173,7 @@ export function activate(openclaw: any, config: PluginConfig = {}) {
     return response;
   };
 
-  // Register provider with OpenClaw
-  console.log(`🔌 Registering provider 'smart-router' with ${availableModels.length} models...`);
-
+  // 1. Register provider for runtime functionality
   openclaw.registerProvider({
     id: 'smart-router',
     name: 'Smart Router',
@@ -194,6 +192,18 @@ export function activate(openclaw: any, config: PluginConfig = {}) {
       };
     }
   });
+
+  // 2. Direct Registry Injection (The "Magic Bridge" for the CLI)
+  // This ensures 'openclaw models list' sees your models immediately
+  if (openclaw.config?.models?.providers) {
+    console.log('🏗️ Injecting models into OpenClaw registry...');
+    openclaw.config.models.providers['smart-router'] = {
+      baseUrl: 'http://localhost/smart-router',
+      api: 'smart-router',
+      apiKey: 'local',
+      models: availableModels
+    };
+  }
   console.log('✅ Provider registered!');
 
   // Register CLI commands

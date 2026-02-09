@@ -1,3 +1,4 @@
+import { createServer } from 'node:http';
 import { LLMProvider } from './provider';
 import { routeRequest, explainRouting } from './router';
 import { CostTracker } from './cost-tracker';
@@ -185,16 +186,58 @@ export function register(api: any) {
     }
   });
 
-  // 2. Direct Registry Injection (The "Magic Bridge" for the CLI)
+  // 2. The "Real Bridge" Server (Internal HTTP listener)
+  // OpenClaw's 'openai-completions' driver makes actual network requests.
+  // We start a tiny local server to catch these and pipe them to our logic.
+  const server = createServer(async (req, res) => {
+    if (req.method === 'POST' && req.url?.startsWith('/v1/chat/completions')) {
+      let body = '';
+      req.on('data', chunk => { body += chunk; });
+      req.on('end', async () => {
+        try {
+          const data = JSON.parse(body);
+          const modelId = data.model || 'auto';
+          const response = await complete(data.messages, modelId);
+
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({
+            id: `chatcmpl-${Date.now()}`,
+            object: 'chat.completion',
+            created: Math.floor(Date.now() / 1000),
+            model: modelId,
+            choices: [{
+              index: 0,
+              message: { role: 'assistant', content: response.content },
+              finish_reason: 'stop'
+            }],
+            usage: response.usage
+          }));
+        } catch (err: any) {
+          console.error('❌ Bridge Error:', err.message);
+          res.writeHead(500);
+          res.end(JSON.stringify({ error: err.message }));
+        }
+      });
+    } else {
+      res.writeHead(404);
+      res.end();
+    }
+  });
+
+  // Listen on a local-only port
+  server.listen(8511, '127.0.0.1', () => {
+    console.log('🚀 Internal HTTP Bridge listening on 127.0.0.1:8511');
+  });
+
+  // 3. Direct Registry Injection (The "Magic Bridge" for the CLI)
   // Ensures 'openclaw models list' sees your models immediately
-  // We use safe recursive initialization to guarantee the object exists
   if (api.config) {
     if (!api.config.models) api.config.models = {};
     if (!api.config.models.providers) api.config.models.providers = {};
 
     console.log('🏗️  Targeting OpenClaw Model Registry...');
     api.config.models.providers['smart-router'] = {
-      baseUrl: 'http://localhost/smart-router',
+      baseUrl: 'http://127.0.0.1:8511/v1', // Point directly to our internal bridge
       api: 'openai-completions',
       apiKey: 'local',
       models: availableModels

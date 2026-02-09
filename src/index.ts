@@ -56,23 +56,17 @@ export function register(api: any) {
     {
       id: 'auto',
       name: '🎯 Auto (Smart Routing)',
-      provider: 'smart-router', // MANDATORY for Registry lookup
       api: 'openai-completions',
       reasoning: true,
       input: ["text", "image"] as ("text" | "image")[],
       cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
       contextWindow: 128000,
-      context_window: 128000, // snake_case fallback
       maxTokens: 4096,
-      max_tokens: 4096, // snake_case fallback
-      local: true,
-      available: configuredProviders.length > 0 // Available if at least one key is set
     },
     ...MODELS.map(m => ({
       id: m.id,
       name: `${m.name} [${m.tier}]`,
-      provider: 'smart-router', // MANDATORY for Registry lookup
-      api: 'smart-router',
+      api: 'openai-completions',
       reasoning: m.reasoning || false,
       input: (m.input || ["text"]) as ("text" | "image")[],
       cost: {
@@ -82,11 +76,7 @@ export function register(api: any) {
         cacheWrite: 0
       },
       contextWindow: m.contextWindow,
-      context_window: m.contextWindow, // snake_case fallback
       maxTokens: m.maxTokens || 4096,
-      max_tokens: m.maxTokens || 4096, // snake_case fallback
-      local: true,
-      available: provider.hasProvider(m.provider) // Dynamically check if key is set
     })),
   ];
 

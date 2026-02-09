@@ -10,6 +10,10 @@ export interface ModelConfig {
   outputCostPerMillion: number;
   contextWindow: number;
   tier: Tier;
+  // Metadata for OpenClaw Registry
+  reasoning?: boolean;
+  input?: ("text" | "image")[];
+  maxTokens?: number;
 }
 
 export interface RoutingDecision {

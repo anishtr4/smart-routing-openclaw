@@ -51,14 +51,28 @@ export function activate(openclaw: any, config: PluginConfig = {}) {
 
   // Register models with OpenClaw
   const availableModels = [
-    { id: 'auto', name: '🎯 Auto (Smart Routing)' },
-    { id: 'smart-llm-router/auto', name: '🎯 Auto (Smart Routing) - Full ID (Explicit)', contextWindow: 128000, provider: 'smart-llm-router', local: true },
-    { id: 'simple', name: '💰 Simple Tier (Cheapest)', contextWindow: 128000, provider: 'smart-llm-router', local: true },
+    {
+      id: 'auto',
+      name: '🎯 Auto (Smart Routing)',
+      reasoning: true,
+      input: ["text", "image"] as ("text" | "image")[],
+      cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+      contextWindow: 128000,
+      maxTokens: 4096
+    },
     ...MODELS.map(m => ({
-      ...m,
-      provider: 'smart-llm-router',
-      local: true, // Mark all mapped models as local too
-      name: `${m.name} ($${m.inputCostPerMillion}/$${m.outputCostPerMillion})`,
+      id: m.id,
+      name: `${m.name} [${m.tier}]`,
+      reasoning: m.reasoning || false,
+      input: (m.input || ["text"]) as ("text" | "image")[],
+      cost: {
+        input: m.inputCostPerMillion,
+        output: m.outputCostPerMillion,
+        cacheRead: 0,
+        cacheWrite: 0
+      },
+      contextWindow: m.contextWindow,
+      maxTokens: m.maxTokens || 4096
     })),
   ];
 
@@ -146,14 +160,9 @@ export function activate(openclaw: any, config: PluginConfig = {}) {
     return response;
   };
 
-  // Register provider with OpenClaw
-  console.log('🔌 Registering provider with models:', JSON.stringify(availableModels, null, 2));
-
-  openclaw.registerProvider({
-    id: 'smart-llm-router',
+  // Register provider with OpenClaw using the two-argument signature
+  openclaw.registerProvider('smart-llm-router', {
     name: 'Smart Router',
-    // Mark as local to bypass auth checks:
-    local: true,
     models: availableModels,
     complete,
   });

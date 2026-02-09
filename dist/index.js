@@ -43,20 +43,33 @@ function activate(openclaw, config = {}) {
     }
     // Register models with OpenClaw
     const availableModels = [
-        { id: 'auto', name: '🎯 Auto (Smart Routing)' },
-        { id: 'smart-llm-router/auto', name: '🎯 Auto (Smart Routing) - Full ID (Explicit)', contextWindow: 128000, provider: 'smart-llm-router' },
-        { id: 'simple', name: '💰 Simple Tier (Cheapest)', contextWindow: 128000, provider: 'smart-llm-router' },
-        { id: 'medium', name: '⚖️ Medium Tier (Balanced)', contextWindow: 128000, provider: 'smart-llm-router' },
-        { id: 'complex', name: '🎓 Complex Tier (High Quality)', contextWindow: 128000, provider: 'smart-llm-router' },
-        { id: 'reasoning', name: '🧠 Reasoning Tier (Maximum Capability)', contextWindow: 128000, provider: 'smart-llm-router' },
+        {
+            id: 'auto',
+            name: '🎯 Auto (Smart Routing)',
+            reasoning: true,
+            input: ["text", "image"],
+            cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+            contextWindow: 128000,
+            maxTokens: 4096
+        },
         ...models_1.MODELS.map(m => ({
-            ...m,
-            provider: 'smart-llm-router', // Explicitly override provider
-            name: `${m.name} ($${m.inputCostPerMillion}/$${m.outputCostPerMillion})`,
+            id: m.id,
+            name: `${m.name} [${m.tier}]`,
+            reasoning: m.reasoning || false,
+            input: (m.input || ["text"]),
+            cost: {
+                input: m.inputCostPerMillion,
+                output: m.outputCostPerMillion,
+                cacheRead: 0,
+                cacheWrite: 0
+            },
+            contextWindow: m.contextWindow,
+            maxTokens: m.maxTokens || 4096
         })),
     ];
     // Main completion function
     const complete = async (messages, requestModelId) => {
+        console.log(`DEBUG: Complete called with requestModelId: "${requestModelId}"`);
         let selectedModel;
         let decision;
         // Determine model ID from request or default
@@ -69,6 +82,7 @@ function activate(openclaw, config = {}) {
         if (modelId === 'auto' && messages[0]?.role === 'system' && messages[0]?.content.startsWith('model:')) {
             modelId = messages[0].content.replace('model:', '').trim();
         }
+        console.log(`DEBUG: Processed modelId: "${modelId}"`);
         // Handle tier selection
         if (modelId === 'auto') {
             decision = (0, router_1.routeRequest)(messages, config.defaultTier || 'MEDIUM');
@@ -117,10 +131,8 @@ function activate(openclaw, config = {}) {
         }
         return response;
     };
-    // Register provider with OpenClaw
-    console.log('🔌 Registering provider with models:', JSON.stringify(availableModels, null, 2));
-    openclaw.registerProvider({
-        id: 'smart-llm-router',
+    // Register provider with OpenClaw using the two-argument signature
+    openclaw.registerProvider('smart-llm-router', {
         name: 'Smart Router',
         models: availableModels,
         complete,

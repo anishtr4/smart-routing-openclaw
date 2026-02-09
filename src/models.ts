@@ -10,6 +10,9 @@ export const MODELS: ModelConfig[] = [
     outputCostPerMillion: 0.79,
     contextWindow: 128000,
     tier: 'SIMPLE',
+    reasoning: false,
+    input: ["text"],
+    maxTokens: 4096
   },
   {
     id: 'gemini-1.5-flash',
@@ -19,8 +22,11 @@ export const MODELS: ModelConfig[] = [
     outputCostPerMillion: 0.30,
     contextWindow: 1000000,
     tier: 'SIMPLE',
+    reasoning: false,
+    input: ["text", "image"],
+    maxTokens: 8192
   },
-  
+
   // MEDIUM TIER - Balanced cost/performance
   {
     id: 'gpt-4o-mini',
@@ -30,6 +36,9 @@ export const MODELS: ModelConfig[] = [
     outputCostPerMillion: 0.60,
     contextWindow: 128000,
     tier: 'MEDIUM',
+    reasoning: false,
+    input: ["text", "image"],
+    maxTokens: 16384
   },
   {
     id: 'claude-haiku-4.5',
@@ -39,6 +48,9 @@ export const MODELS: ModelConfig[] = [
     outputCostPerMillion: 5.00,
     contextWindow: 200000,
     tier: 'MEDIUM',
+    reasoning: false,
+    input: ["text", "image"],
+    maxTokens: 4096
   },
   {
     id: 'gemini-2.0-flash',
@@ -48,8 +60,11 @@ export const MODELS: ModelConfig[] = [
     outputCostPerMillion: 0.40,
     contextWindow: 1000000,
     tier: 'MEDIUM',
+    reasoning: false,
+    input: ["text", "image"],
+    maxTokens: 8192
   },
-  
+
   // COMPLEX TIER - High quality for difficult tasks
   {
     id: 'claude-sonnet-4.5',
@@ -59,6 +74,9 @@ export const MODELS: ModelConfig[] = [
     outputCostPerMillion: 15.00,
     contextWindow: 200000,
     tier: 'COMPLEX',
+    reasoning: false,
+    input: ["text", "image"],
+    maxTokens: 8192
   },
   {
     id: 'gpt-4o',
@@ -68,6 +86,9 @@ export const MODELS: ModelConfig[] = [
     outputCostPerMillion: 10.00,
     contextWindow: 128000,
     tier: 'COMPLEX',
+    reasoning: false,
+    input: ["text", "image"],
+    maxTokens: 16384
   },
   {
     id: 'gemini-2.5-pro',
@@ -77,8 +98,11 @@ export const MODELS: ModelConfig[] = [
     outputCostPerMillion: 10.00,
     contextWindow: 2000000,
     tier: 'COMPLEX',
+    reasoning: false,
+    input: ["text", "image"],
+    maxTokens: 8192
   },
-  
+
   // REASONING TIER - Maximum capability for hard problems
   {
     id: 'claude-opus-4.5',
@@ -88,6 +112,9 @@ export const MODELS: ModelConfig[] = [
     outputCostPerMillion: 75.00,
     contextWindow: 200000,
     tier: 'REASONING',
+    reasoning: false,
+    input: ["text"],
+    maxTokens: 4096
   },
   {
     id: 'o3-mini',
@@ -97,6 +124,9 @@ export const MODELS: ModelConfig[] = [
     outputCostPerMillion: 4.40,
     contextWindow: 128000,
     tier: 'REASONING',
+    reasoning: true,
+    input: ["text"],
+    maxTokens: 65536
   },
   {
     id: 'deepseek-reasoner',
@@ -106,6 +136,9 @@ export const MODELS: ModelConfig[] = [
     outputCostPerMillion: 2.19,
     contextWindow: 128000,
     tier: 'REASONING',
+    reasoning: true,
+    input: ["text"],
+    maxTokens: 4096
   },
 ];
 

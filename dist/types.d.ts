@@ -8,6 +8,9 @@ export interface ModelConfig {
     outputCostPerMillion: number;
     contextWindow: number;
     tier: Tier;
+    reasoning?: boolean;
+    input?: ("text" | "image")[];
+    maxTokens?: number;
 }
 export interface RoutingDecision {
     model: ModelConfig;

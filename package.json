@@ -6,13 +6,10 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "prepublishOnly": "npm run build",
     "dev": "tsc --watch",
     "clean": "rm -rf dist",
     "test-router": "npm run build && npx tsx test-router.ts",
-    "install-plugin": "npm run build && npm link && echo '\n✅ Plugin built and linked! Now run:\n   openclaw plugin install $(pwd)\n'",
-    "uninstall-plugin": "openclaw plugin uninstall @local/smart-llm-router && npm unlink",
-    "reinstall": "npm run uninstall-plugin ; npm run install-plugin"
+    "lint": "eslint ."
   },
   "keywords": [
     "openclaw",

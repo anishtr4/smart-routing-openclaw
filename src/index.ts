@@ -52,13 +52,13 @@ export function activate(openclaw: any, config: PluginConfig = {}) {
   // Register models with OpenClaw
   const availableModels = [
     { id: 'auto', name: '🎯 Auto (Smart Routing)' },
-    { id: 'smart-router/auto', name: '🎯 Auto (Smart Routing) - Full ID (Explicit)' },
-    { id: 'simple', name: '💰 Simple Tier (Cheapest)' },
-    { id: 'medium', name: '⚖️ Medium Tier (Balanced)' },
-    { id: 'complex', name: '🎓 Complex Tier (High Quality)' },
-    { id: 'reasoning', name: '🧠 Reasoning Tier (Maximum Capability)' },
+    { id: 'smart-router/auto', name: '🎯 Auto (Smart Routing) - Full ID (Explicit)', contextWindow: 128000, provider: 'smart-router' },
+    { id: 'simple', name: '💰 Simple Tier (Cheapest)', contextWindow: 128000, provider: 'smart-router' },
+    { id: 'medium', name: '⚖️ Medium Tier (Balanced)', contextWindow: 128000, provider: 'smart-router' },
+    { id: 'complex', name: '🎓 Complex Tier (High Quality)', contextWindow: 128000, provider: 'smart-router' },
+    { id: 'reasoning', name: '🧠 Reasoning Tier (Maximum Capability)', contextWindow: 128000, provider: 'smart-router' },
     ...MODELS.map(m => ({
-      id: m.id,
+      ...m, // Pass all original properties (contextWindow, provider, etc.)
       name: `${m.name} ($${m.inputCostPerMillion}/$${m.outputCostPerMillion})`,
     })),
   ];

@@ -4,7 +4,7 @@ import { CostTracker } from './cost-tracker';
 import { PluginConfig, Message, Tier } from './types';
 import { MODELS, getCheapestModelForTier } from './models';
 
-export async function activate(openclaw: any, config: PluginConfig = {}) {
+export function activate(openclaw: any, config: PluginConfig = {}) {
   console.log('🚀 Smart LLM Router initializing...');
   console.log('📥 Received Config:', JSON.stringify(config, null, 2));
 

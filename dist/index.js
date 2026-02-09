@@ -6,7 +6,7 @@ const provider_1 = require("./provider");
 const router_1 = require("./router");
 const cost_tracker_1 = require("./cost-tracker");
 const models_1 = require("./models");
-async function activate(openclaw, config = {}) {
+function activate(openclaw, config = {}) {
     console.log('🚀 Smart LLM Router initializing...');
     console.log('📥 Received Config:', JSON.stringify(config, null, 2));
     // Get API keys from config or environment

@@ -8,7 +8,7 @@ Save **78-96%** on LLM costs by automatically routing requests to the most cost-
 
 ```bash
 # Install directly from GitHub
-openclaw plugin install https://github.com/anishtr4/smart-routing-openclaw.git
+openclaw plugins install https://github.com/anishtr4/smart-routing-openclaw.git
 
 # Configure API keys (at least one required)
 export GROQ_API_KEY="gsk_..."          # FREE - Start here!
@@ -73,7 +73,7 @@ You need **at least one** API key. Start with the free options!
 ### Method 1: Direct from GitHub (Easiest)
 
 ```bash
-openclaw plugin install https://github.com/anishtr4/smart-routing-openclaw.git
+openclaw plugins install https://github.com/anishtr4/smart-routing-openclaw.git
 ```
 
 ### Method 2: Local Installation
@@ -88,7 +88,7 @@ npm install
 npm run build
 
 # Install to OpenClaw
-openclaw plugin install $(pwd)
+openclaw plugins install $(pwd)
 ```
 
 You should see:
@@ -334,7 +334,7 @@ git clone https://github.com/anishtr4/smart-routing-openclaw.git
 cd smart-routing-openclaw
 npm install
 npm run build
-openclaw plugin install $(pwd)
+openclaw plugins install $(pwd)
 ```
 
 ### Build errors
@@ -484,7 +484,7 @@ Issues and PRs welcome! This is an open-source project designed to save develope
 ## ⭐ Quick Start Checklist
 
 - [ ] Get at least one API key (start with Groq - it's free!)
-- [ ] Install plugin: `openclaw plugin install https://github.com/anishtr4/smart-routing-openclaw.git`
+- [ ] Install plugin: `openclaw plugins install https://github.com/anishtr4/smart-routing-openclaw.git`
 - [ ] Configure API keys in environment variables
 - [ ] Enable routing: `openclaw config set model smart-router/auto`
 - [ ] Test it: `openclaw chat "Hello world"`

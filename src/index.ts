@@ -6,6 +6,7 @@ import { MODELS, getCheapestModelForTier } from './models';
 
 export async function activate(openclaw: any, config: PluginConfig = {}) {
   console.log('🚀 Smart LLM Router initializing...');
+  console.log('📥 Received Config:', JSON.stringify(config, null, 2));
 
   // Get API keys from config or environment
   const anthropicKey = config.anthropicApiKey || process.env.ANTHROPIC_API_KEY;

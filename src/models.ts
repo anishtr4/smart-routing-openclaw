@@ -38,6 +38,18 @@ export const MODELS: ModelConfig[] = [
     input: ["text", "image"],
     maxTokens: 8192
   },
+  {
+    id: 'gemini-2.5-flash',
+    name: 'Gemini 2.5 Flash',
+    provider: 'google',
+    inputCostPerMillion: 0.075,
+    outputCostPerMillion: 0.30,
+    contextWindow: 1000000,
+    tier: 'SIMPLE',
+    reasoning: false,
+    input: ["text", "image"],
+    maxTokens: 8192
+  },
 
   // MEDIUM TIER - Balanced cost/performance
   {
@@ -114,6 +126,18 @@ export const MODELS: ModelConfig[] = [
     input: ["text", "image"],
     maxTokens: 8192
   },
+  {
+    id: 'gemini-2.5-pro',
+    name: 'Gemini 2.5 Pro',
+    provider: 'google',
+    inputCostPerMillion: 2.50,
+    outputCostPerMillion: 10.00,
+    contextWindow: 2000000,
+    tier: 'COMPLEX',
+    reasoning: true,
+    input: ["text", "image"],
+    maxTokens: 8192
+  },
 
   // REASONING TIER - Maximum capability for hard problems
   {
@@ -157,13 +181,13 @@ export const MODELS: ModelConfig[] = [
 // Quick lookup by provider and tier
 export const PRIMARY_MODELS: Record<string, ModelConfig> = {
   'simple-groq': MODELS.find(m => m.id === 'llama-3.1-70b-versatile')!,
-  'simple-google': MODELS.find(m => m.id === 'gemini-2.0-flash-exp')!,
-  'medium-google': MODELS.find(m => m.id === 'gemini-1.5-pro-latest')!,
+  'simple-google': MODELS.find(m => m.id === 'gemini-2.5-flash')!,
+  'medium-google': MODELS.find(m => m.id === 'gemini-2.5-flash')!,
   'medium-openai': MODELS.find(m => m.id === 'gpt-4o-mini')!,
   'medium-anthropic': MODELS.find(m => m.id === 'claude-haiku-4.5')!,
   'complex-anthropic': MODELS.find(m => m.id === 'claude-sonnet-4.5')!,
   'complex-openai': MODELS.find(m => m.id === 'gpt-4o')!,
-  'complex-google': MODELS.find(m => m.id === 'gemini-1.5-pro-latest')!,
+  'complex-google': MODELS.find(m => m.id === 'gemini-2.5-pro')!,
   'reasoning-anthropic': MODELS.find(m => m.id === 'claude-opus-4.5')!,
   'reasoning-openai': MODELS.find(m => m.id === 'o3-mini')!,
   'reasoning-groq': MODELS.find(m => m.id === 'deepseek-reasoner')!,

@@ -78,15 +78,17 @@ function activate(openclaw, config = {}) {
         let decision;
         // Determine model ID from request or default
         let modelId = requestModelId || 'auto';
-        // Strip provider prefix if present
-        if (modelId.includes('/')) {
-            modelId = modelId.split('/').pop() || 'auto';
+        const originalId = modelId;
+        // Strip provider prefix IF it matches our provider ID
+        if (modelId.startsWith('smart-router/')) {
+            modelId = modelId.replace('smart-router/', '');
         }
-        // Fallback: Check system message for model override (CLI/Testing)
-        if (modelId === 'auto' && messages[0]?.role === 'system' && messages[0]?.content.startsWith('model:')) {
-            modelId = messages[0].content.replace('model:', '').trim();
+        else if (modelId.includes('/')) {
+            // If it's another provider's model, we can't handle it unless it's a known model ID
+            const parts = modelId.split('/');
+            modelId = parts[parts.length - 1];
         }
-        console.log(`DEBUG: Processed modelId: "${modelId}"`);
+        console.log(`DEBUG: Routing request for model: "${modelId}" (Original: "${originalId}")`);
         // Handle tier selection
         if (modelId === 'auto') {
             decision = (0, router_1.routeRequest)(messages, config.defaultTier || 'MEDIUM');

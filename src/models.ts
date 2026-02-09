@@ -26,6 +26,18 @@ export const MODELS: ModelConfig[] = [
     input: ["text", "image"],
     maxTokens: 8192
   },
+  {
+    id: 'gemini-2.0-flash-exp',
+    name: 'Gemini 2.0 Flash',
+    provider: 'google',
+    inputCostPerMillion: 0.10,
+    outputCostPerMillion: 0.40,
+    contextWindow: 1000000,
+    tier: 'SIMPLE',
+    reasoning: false,
+    input: ["text", "image"],
+    maxTokens: 8192
+  },
 
   // MEDIUM TIER - Balanced cost/performance
   {
@@ -145,7 +157,7 @@ export const MODELS: ModelConfig[] = [
 // Quick lookup by provider and tier
 export const PRIMARY_MODELS: Record<string, ModelConfig> = {
   'simple-groq': MODELS.find(m => m.id === 'llama-3.1-70b-versatile')!,
-  'simple-google': MODELS.find(m => m.id === 'gemini-1.5-flash-latest')!,
+  'simple-google': MODELS.find(m => m.id === 'gemini-2.0-flash-exp')!,
   'medium-google': MODELS.find(m => m.id === 'gemini-1.5-pro-latest')!,
   'medium-openai': MODELS.find(m => m.id === 'gpt-4o-mini')!,
   'medium-anthropic': MODELS.find(m => m.id === 'claude-haiku-4.5')!,

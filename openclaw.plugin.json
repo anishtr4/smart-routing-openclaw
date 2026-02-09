@@ -7,7 +7,7 @@
         "light": "assets/icon-light.png",
         "dark": "assets/icon-dark.png"
     },
-    "entry": "src/index.ts",
+    "entry": "dist/index.js",
     "config": {
         "anthropicApiKey": {
             "type": "string",

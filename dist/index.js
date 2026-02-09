@@ -211,7 +211,7 @@ function activate(openclaw, config = {}) {
     });
     console.log('✅ Smart LLM Router ready!\n');
     console.log('💡 Usage:');
-    console.log('   openclaw config set model smart-router/auto');
+    console.log('   openclaw config set agents.defaults.model.primary smart-router/auto');
     console.log('   openclaw chat "Your prompt here"\n');
     console.log('💡 Commands:');
     console.log('   openclaw router-stats    # View cost statistics');

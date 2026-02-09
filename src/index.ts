@@ -64,6 +64,7 @@ export function activate(openclaw: any, config: PluginConfig = {}) {
 
   // Main completion function
   const complete = async (messages: Message[], requestModelId?: string) => {
+    console.log(`DEBUG: Complete called with requestModelId: "${requestModelId}"`);
     let selectedModel;
     let decision;
 
@@ -79,6 +80,7 @@ export function activate(openclaw: any, config: PluginConfig = {}) {
     if (modelId === 'auto' && messages[0]?.role === 'system' && messages[0]?.content.startsWith('model:')) {
       modelId = messages[0].content.replace('model:', '').trim();
     }
+    console.log(`DEBUG: Processed modelId: "${modelId}"`);
 
     // Handle tier selection
     if (modelId === 'auto') {
